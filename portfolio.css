@@ -1,0 +1,440 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/*----------------- Left-bar ---------------------*/
+
+.main-bar {
+    display: flex;
+}
+
+#leftbar {
+    width: 30%;
+    text-align: center;
+    background-color: darkcyan;
+    color: white;
+    height: 600px;
+    position: fixed;
+    overflow: scroll;
+}
+
+.photo img {
+    border-radius: 50%;
+    width: 200px;
+    margin-top: 30px;
+}
+
+.photo h1 {
+    color: white;
+    font-family: cursive;
+    text-decoration: underline;
+}
+
+.photo h3 {
+    font-family: cursive;
+    color: white;
+    font-style: italic;
+    text-decoration: underline;
+}
+
+.menu {
+    padding: 100px 0px;
+}
+
+.submenu li {
+    list-style: none;
+    padding: 25px 0px;
+    border-top: 2px solid white;
+
+}
+
+li a {
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    font-family: cursive;
+}
+
+.submenu li:hover {
+    transform: 1s;
+    background-color: white;
+}
+
+.submenu li:hover a {
+    color: darkcyan;
+    transition: 1s;
+}
+
+#border {
+    border-bottom: 2px solid white;
+}
+
+.main-icon {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 70px;
+}
+
+.main-icon a {
+    text-decoration: none;
+    margin: 7px;
+    background-color: #75c4c499;
+    color: white;
+}
+
+.main-icon a:hover {
+    background-color: white;
+    color: darkcyan;
+    transition: 1s;
+}
+
+.main-icon i {
+    padding: 10px;
+}
+
+.line h5 {
+    padding: 20px;
+    border-top: 1px solid #75c4c499;
+}
+
+#bar {
+    display: none;
+    position: fixed;
+    color: black;
+}
+
+.closebtn {
+    display: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+
+/*---------------------- About ------------------------*/
+
+
+
+#rightbar {
+    background-image: url(photo/About/main.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    width: 70%;
+    position: absolute;
+    right: 0;
+}
+
+.text1 {
+    background-color: #1617187d;
+    text-align: center;
+    color: white;
+}
+
+.left {
+    width: 50%;
+
+}
+
+.right {
+    width: 50%;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+}
+
+.main-left {
+    display: flex;
+    padding-top: 30px;
+}
+
+.left img {
+    height: 250px;
+    width: 260px;
+    text-align: center;
+    border-radius: 7px;
+}
+
+.text h1 {
+    padding-top: 70px;
+    font-family: math;
+    font-size: 45px;
+    text-decoration: underline;
+    color: #9ae4e4;
+}
+
+.text p {
+    font-size: 20px;
+    padding: 10px;
+
+}
+
+.left1 h1 {
+    font-family: math;
+    text-decoration: underline;
+    color: #9ae4e4;
+}
+
+.left1 p {
+    font-family: cursive;
+    padding: 9px 10px 3px 18px;
+    text-align: left;
+    font-size: 13px;
+}
+
+.left1 span {
+    font-weight: bold;
+    color: #9ae4e4;
+}
+
+.main-right {
+    display: flex;
+    padding-top: 30px;
+}
+
+.right p {
+    font-family: cursive;
+    padding: 9px 10px 3px 18px;
+    text-align: left;
+    font-size: 13px;
+}
+
+.right span {
+    font-weight: bold;
+    color: #9ae4e4;
+}
+
+.right h4{
+    font-family: math;
+    text-decoration: underline;
+    margin: 15px;
+}
+
+.right1 img {
+    height: 250px;
+    width: 300px;
+    text-align: center;
+    border-radius: 7px;
+}
+
+.right h1 {
+    font-family: math;
+    text-decoration: underline;
+    padding-bottom: 15px;
+    color: #9ae4e4;
+}
+
+.Interest li {
+    text-align: left;
+    padding: 3px 0px 0px 10px;
+    font-size: 16px;
+    font-family: math;
+}
+
+.about {
+    padding-bottom: 80px;
+    border-bottom: 2px solid #ffffffc2;
+
+}
+
+/*---------------- good at ---------------------*/
+
+.good {
+    padding-bottom: 40px;
+    border-bottom: 2px solid #ffffffc2;
+}
+
+.main-box {
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 100px;
+}
+
+.box {
+    width: 45%;
+    margin: 10px;
+    color: white;
+    background-color: #ffffff3d;
+}
+
+.box:hover {
+    background-color: #ffffffc2;
+    color: black;
+    transition: 1s;
+}
+
+.box:hover .box-icon {
+    color: maroon;
+    border: 2px solid maroon;
+    transition: 1s;
+}
+
+
+.box-icon {
+    width: 60px;
+    text-align: left;
+    border: 2px solid white;
+    padding: 7px;
+    font-size: 50px;
+    border-radius: 50%;
+    font-weight: 600;
+    margin: 20px;
+}
+
+.box h1 {
+    font-family: math;
+    text-decoration: underline;
+}
+
+.box p {
+    padding: 12px;
+    margin-top: 5px;
+    font-family: cursive;
+    font-size: 16px;
+    margin-bottom: 50px;
+}
+
+/*--------------------- my-work --------------------*/
+
+.work {
+    padding-bottom: 40px;
+    border-bottom: 2px solid #ffffffc2;
+}
+
+.mainwork-box {
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 100px;
+    margin-top: 70px;
+}
+
+.work-box4 {
+    width: 100%;
+    height: 300px;
+    margin: 10px;
+    color: white;
+    background-size: cover;
+    background-image: url(photo/my-work/work4.png);
+    overflow: hidden;
+}
+
+.work-box3 {
+    width: 100%;
+    height: 300px;
+    margin: 10px;
+    color: white;
+    background-size: cover;
+    background-image: url(photo/my-work/work3.png);
+    overflow: hidden;
+}
+
+.work-box2 {
+    width: 100%;
+    height: 300px;
+    margin: 10px;
+    color: white;
+    background-size: cover;
+    background-image: url(photo/my-work/work2.png);
+    overflow: hidden;
+}
+
+.work-box {
+    width: 100%;
+    height: 300px;
+    margin: 10px;
+    color: white;
+    background-size: cover;
+    background-image: url(photo/my-work/work.png);
+    overflow: hidden;
+}
+
+.top {
+    height: 100%;
+    width: 100%;
+    opacity: 0.9;
+    background-size: cover;
+    margin: 20px;
+    background-color: #ceecec;
+    transition: 1s;
+    transform: translateY(100%);
+
+}
+
+.work-box:hover .top {
+    transform: translateY(0%);
+}
+
+.work-box2:hover .top {
+    transform: translateY(0%);
+}
+
+.work-box3:hover .top {
+    transform: translateY(0%);
+}
+
+.work-box4:hover .top {
+    transform: translateY(0%);
+}
+
+#search{
+    margin-top: 70px;
+    border: 2px solid black;
+    font-size: 25px;
+    color: black;
+    border-radius: 50%;
+    padding: 15px;
+}
+
+#search:hover{
+    background-color: white;
+    color: maroon;
+    border: 2px solid maroon;
+}
+/*----------------- contact ------------------------*/
+.type {
+    margin-top: 30px;
+}
+
+.txt {
+    width: 48%;
+    height: 30px;
+    margin: 10px 0px;
+}
+
+.txt1 {
+    width: 100%;
+    height: 30px;
+    margin: 10px 0px;
+}
+
+.txt2 {
+    width: 100%;
+    height: 100px;
+    margin: 10px 0px;
+}
+
+input {
+    border: none;
+    border-radius: 2px;
+}
+
+input::placeholder {
+    padding-left: 20px;
+    font-size: 15px;
+    font-family: math;
+}
+
+.button {
+    padding: 20px 0px;
+}
+
+.btn {
+    padding: 15px;
+    background-color: darkcyan;
+    color: white;
+}
