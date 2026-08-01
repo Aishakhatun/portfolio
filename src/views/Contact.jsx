@@ -9,6 +9,7 @@ export default function Contact() {
   const [form, setForm] = useState({ name:'', email:'', subject:'', message:'' });
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState(null);
+  const [apiError, setApiError] = useState('');
 
   const th = {
     h:    isDark ? 'text-white'     : 'text-slate-900',
