@@ -13,13 +13,21 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// MongoDB Connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/portfolio';
-
-mongoose
-  .connect(MONGODB_URI)
-  .then(() => console.log(` Connected to MongoDB (Database: portfolio)`))
-  .catch((err) => console.error(' MongoDB connection error:', err.message));
+// Serverless-friendly MongoDB Connection helper
+let isConnected = false;
+async function connectDB() {
+  if (isConnected && mongoose.connection.readyState === 1) {
+    return;
+  }
+  const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/portfolio';
+  try {
+    await mongoose.connect(MONGODB_URI);
+    isConnected = true;
+    console.log(` Connected to MongoDB (Database: portfolio)`);
+  } catch (err) {
+    console.error(' MongoDB connection error:', err.message);
+  }
+}
 
 // Mongoose Schema & Model for collection: aisha-contactInquiry
 const contactInquirySchema = new mongoose.Schema({
@@ -30,15 +38,19 @@ const contactInquirySchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-const ContactInquiry = mongoose.model(
-  'ContactInquiry',
-  contactInquirySchema,
-  process.env.COLLECTION_NAME || 'aisha-contactInquiry'
-);
+const ContactInquiry =
+  mongoose.models.ContactInquiry ||
+  mongoose.model(
+    'ContactInquiry',
+    contactInquirySchema,
+    process.env.COLLECTION_NAME || 'aisha-contactInquiry'
+  );
 
 // POST Endpoint for Contact Us Form
 app.post('/api/contact', async (req, res) => {
   try {
+    await connectDB();
+
     const { name, email, subject, message } = req.body;
 
     // Validation
@@ -108,7 +120,7 @@ app.post('/api/contact', async (req, res) => {
         emailStatus = `failed: ${mailErr.message}`;
       }
     } else {
-      console.log(' Email notification skipped (EMAIL_PASS not configured in .env)');
+      console.log(' Email notification skipped (EMAIL_PASS not configured)');
     }
 
     return res.status(200).json({
@@ -124,10 +136,17 @@ app.post('/api/contact', async (req, res) => {
 });
 
 // Health check endpoint
-app.get('/api/health', (req, res) => {
+app.get('/api/health', async (req, res) => {
+  await connectDB();
   res.json({ status: 'ok', database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected' });
 });
 
-app.listen(PORT, () => {
-  console.log(` Server listening on http://localhost:${PORT}`);
-});
+// Start standalone server when executed locally
+if (process.env.VERCEL !== '1') {
+  connectDB();
+  app.listen(PORT, () => {
+    console.log(` Server listening on http://localhost:${PORT}`);
+  });
+}
+
+export default app;
