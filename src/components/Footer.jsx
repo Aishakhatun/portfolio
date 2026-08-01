@@ -1,8 +1,11 @@
+'use client';
+
 import React from 'react';
+import Link from 'next/link';
 import { Mail, Phone, MapPin, Heart, Github, Linkedin, Instagram, Twitter, ArrowUp, Terminal } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext.jsx';
 
-export default function Footer({ setActivePage }) {
+export default function Footer() {
   const { isDark } = useTheme();
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -59,10 +62,10 @@ export default function Footer({ setActivePage }) {
           <div className="space-y-4">
             <h4 className={`text-[10px] font-bold uppercase tracking-widest font-outfit ${th.muted}`}>Navigation</h4>
             <ul className="space-y-2 text-sm">
-              {[{id:'home',label:'Home'},{id:'about',label:'About Me'},{id:'services',label:'Services'},{id:'contact',label:'Contact'}].map(item=>(
-                <li key={item.id}>
-                  <button onClick={()=>{setActivePage(item.id); scrollToTop();}}
-                    className={`transition-colors cursor-pointer ${th.link}`}>{item.label}</button>
+              {[{href:'/',label:'Home'},{href:'/about',label:'About Me'},{href:'/services',label:'Services'},{href:'/contact',label:'Contact'}].map(item=>(
+                <li key={item.href}>
+                  <Link href={item.href} onClick={scrollToTop}
+                    className={`transition-colors cursor-pointer ${th.link}`}>{item.label}</Link>
                 </li>
               ))}
             </ul>
@@ -93,10 +96,10 @@ export default function Footer({ setActivePage }) {
             <div className={`p-5 rounded-2xl relative overflow-hidden ${isDark?'glass border border-indigo-500/20':'bg-indigo-50 border border-indigo-100'}`}>
               <div className="space-y-3">
                 <div className={`flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest ${isDark?'text-indigo-400':'text-indigo-600'}`}>
-                  <Heart className="w-3 h-3 text-pink-500 fill-pink-500"/> React + Tailwind CSS
+                  <Heart className="w-3 h-3 text-pink-500 fill-pink-500"/> Next.js + Tailwind CSS
                 </div>
                 <p className={`text-[11px] leading-relaxed ${th.muted}`}>
-                  Built with modern React component architecture and Tailwind CSS design tokens. Features 3D Three.js background.
+                  Built with modern Next.js App Router architecture and Tailwind CSS design tokens. Features 3D Three.js background.
                 </p>
                 <div className={`pt-2 border-t text-[11px] font-bold`} style={{borderColor:'var(--border)'}}>
                   <span className={th.muted}>Created by: </span>
@@ -111,8 +114,9 @@ export default function Footer({ setActivePage }) {
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px]" style={{color:'var(--text-3)'}}>
           <p>© {new Date().getFullYear()} Aisha Sabugar. All rights reserved.</p>
           <div className="flex items-center gap-5">
-            <span>React.js &amp; Tailwind CSS Portfolio</span>
+            <span>Next.js App Router Portfolio</span>
             <button onClick={scrollToTop}
+              aria-label="Scroll to top"
               className={`w-8 h-8 rounded-full glass border flex items-center justify-center transition-all hover:border-indigo-500/40 ${th.muted}`}
               style={{borderColor:'var(--border)'}}>
               <ArrowUp className="w-4 h-4"/>

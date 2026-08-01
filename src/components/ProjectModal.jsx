@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { X, ExternalLink, CheckCircle2, Layers, Tag } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext.jsx';

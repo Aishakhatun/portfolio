@@ -1,3 +1,8 @@
+# Next.js build output
+.next/
+out/
+build/
+
 # Dependencies
 node_modules
 fontawesome-free-6.4.0-web
@@ -7,11 +12,6 @@ fontawesome-free-6.4.0-web
 .env
 .env.local
 .env.*.local
-
-# Build output
-dist
-dist-ssr
-*.local
 
 # Logs
 npm-debug.log*

@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, Linkedin, Github, Instagram, Twitter, Facebook, MessageSquare, Clock, Zap, Globe } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext.jsx';

@@ -1,20 +1,9 @@
-import express from 'express';
+import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import nodemailer from 'nodemailer';
-import dotenv from 'dotenv';
-import cors from 'cors';
 
-dotenv.config();
-
-const app = express();
-const PORT = process.env.PORT || 5000;
-
-// Middleware
-app.use(cors());
-app.use(express.json());
-
-// Serverless-friendly MongoDB Connection helper
 let isConnected = false;
+
 async function connectDB() {
   if (isConnected && mongoose.connection.readyState === 1) {
     return;
@@ -23,7 +12,7 @@ async function connectDB() {
   try {
     await mongoose.connect(MONGODB_URI);
     isConnected = true;
-    console.log(` Connected to MongoDB (Database: portfolio)`);
+    console.log(' Connected to MongoDB (Database: portfolio)');
   } catch (err) {
     console.error(' MongoDB connection error:', err.message);
   }
@@ -46,16 +35,15 @@ const ContactInquiry =
     process.env.COLLECTION_NAME || 'aisha-contactInquiry'
   );
 
-// POST Endpoint for Contact Us Form
-app.post('/api/contact', async (req, res) => {
+export async function POST(req) {
   try {
     await connectDB();
 
-    const { name, email, subject, message } = req.body;
+    const { name, email, subject, message } = await req.json();
 
     // Validation
     if (!name || !email || !subject || !message) {
-      return res.status(400).json({ success: false, error: 'All fields are required' });
+      return NextResponse.json({ success: false, error: 'All fields are required' }, { status: 400 });
     }
 
     // 1. Save Inquiry in MongoDB Collection: aisha-contactInquiry
@@ -86,7 +74,7 @@ app.post('/api/contact', async (req, res) => {
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
               <h2 style="color: #4f46e5; margin-top: 0;">New Contact Form Submission</h2>
-              <p>You have received a new inquiry from your portfolio website.</p>
+              <p>You have received a new inquiry from your Next.js portfolio website.</p>
               <hr style="border: 0; border-top: 1px solid #eeeeee; margin: 20px 0;" />
               <table style="width: 100%; border-collapse: collapse;">
                 <tr>
@@ -123,7 +111,7 @@ app.post('/api/contact', async (req, res) => {
       console.log(' Email notification skipped (EMAIL_PASS not configured)');
     }
 
-    return res.status(200).json({
+    return NextResponse.json({
       success: true,
       message: 'Inquiry submitted successfully!',
       inquiryId: newInquiry._id,
@@ -131,22 +119,6 @@ app.post('/api/contact', async (req, res) => {
     });
   } catch (err) {
     console.error(' Server Error handling contact form:', err);
-    return res.status(500).json({ success: false, error: 'Internal Server Error' });
+    return NextResponse.json({ success: false, error: 'Internal Server Error' }, { status: 500 });
   }
-});
-
-// Health check endpoint
-app.get('/api/health', async (req, res) => {
-  await connectDB();
-  res.json({ status: 'ok', database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected' });
-});
-
-// Start standalone server when executed locally
-if (process.env.VERCEL !== '1') {
-  connectDB();
-  app.listen(PORT, () => {
-    console.log(` Server listening on http://localhost:${PORT}`);
-  });
 }
-
-export default app;

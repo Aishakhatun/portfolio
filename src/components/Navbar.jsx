@@ -1,11 +1,16 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Menu, X, Code2, Send, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext.jsx';
 
-export default function Navbar({ activePage, setActivePage }) {
+export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { isDark, toggleTheme } = useTheme();
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -14,17 +19,11 @@ export default function Navbar({ activePage, setActivePage }) {
   }, []);
 
   const navItems = [
-    { id: 'home',     label: 'Home' },
-    { id: 'about',    label: 'About' },
-    { id: 'services', label: 'Services' },
-    { id: 'contact',  label: 'Contact' },
+    { href: '/',        label: 'Home' },
+    { href: '/about',   label: 'About' },
+    { href: '/services',label: 'Services' },
+    { href: '/contact', label: 'Contact' },
   ];
-
-  const handleNavClick = (id) => {
-    setActivePage(id);
-    setMobileMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
 
   return (
     <header
@@ -37,7 +36,7 @@ export default function Navbar({ activePage, setActivePage }) {
         <div className="flex items-center justify-between gap-4">
 
           {/* ── Brand ─────────────────────────────────────────── */}
-          <button onClick={() => handleNavClick('home')} className="flex items-center gap-3 group focus:outline-none shrink-0">
+          <Link href="/" className="flex items-center gap-3 group focus:outline-none shrink-0">
             <div className="relative w-10 h-10">
               <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-indigo-600 to-cyan-400 blur-sm opacity-50 group-hover:opacity-80 transition-opacity"></div>
               <div className="relative w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-violet-600 to-cyan-400 flex items-center justify-center text-white shadow-lg">
@@ -52,17 +51,17 @@ export default function Navbar({ activePage, setActivePage }) {
                 Web Designer & Developer
               </span>
             </div>
-          </button>
+          </Link>
 
           {/* ── Desktop Nav Pills ─────────────────────────────── */}
           <nav className="hidden md:flex items-center gap-1 px-2 py-1.5 rounded-full glass border"
             style={{ borderColor: 'var(--border)' }}>
             {navItems.map((item) => {
-              const isActive = activePage === item.id;
+              const isActive = pathname === item.href;
               return (
-                <button
-                  key={item.id}
-                  onClick={() => handleNavClick(item.id)}
+                <Link
+                  key={item.href}
+                  href={item.href}
                   className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 cursor-pointer relative ${
                     isActive
                       ? 'bg-gradient-to-r from-indigo-600 via-violet-600 to-cyan-500 text-white shadow-md shadow-indigo-400/30'
@@ -72,7 +71,7 @@ export default function Navbar({ activePage, setActivePage }) {
                   }`}
                 >
                   {item.label}
-                </button>
+                </Link>
               );
             })}
           </nav>
@@ -100,13 +99,13 @@ export default function Navbar({ activePage, setActivePage }) {
             </button>
 
             {/* CTA */}
-            <button
-              onClick={() => handleNavClick('contact')}
+            <Link
+              href="/contact"
               className="hidden md:flex btn-glow px-5 py-2.5 rounded-full border border-indigo-500/50 font-semibold text-sm items-center gap-2 group cursor-pointer text-indigo-600 hover:text-white hover:bg-indigo-600 transition-colors"
             >
               <Send className="w-4 h-4" />
               <span>Hire Me</span>
-            </button>
+            </Link>
 
             {/* Mobile hamburger */}
             <button
@@ -131,11 +130,12 @@ export default function Navbar({ activePage, setActivePage }) {
             style={{ borderColor: 'var(--border)', background: 'var(--nav-bg)' }}
           >
             {navItems.map((item) => {
-              const isActive = activePage === item.id;
+              const isActive = pathname === item.href;
               return (
-                <button
-                  key={item.id}
-                  onClick={() => handleNavClick(item.id)}
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
                   className={`w-full text-left px-5 py-3.5 rounded-2xl text-base font-semibold flex items-center justify-between cursor-pointer transition-all ${
                     isActive
                       ? 'bg-indigo-600/15 text-indigo-600 border border-indigo-500/30'
@@ -144,7 +144,7 @@ export default function Navbar({ activePage, setActivePage }) {
                 >
                   <span>{item.label}</span>
                   {isActive && <div className="w-2 h-2 rounded-full bg-indigo-500 pulse-badge"></div>}
-                </button>
+                </Link>
               );
             })}
 
@@ -163,13 +163,14 @@ export default function Navbar({ activePage, setActivePage }) {
                 </button>
               </div>
 
-              <button
-                onClick={() => handleNavClick('contact')}
-                className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 to-cyan-500 text-white font-bold flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/25"
+              <Link
+                href="/contact"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 to-cyan-500 text-white font-bold flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/25 text-center"
               >
                 <Send className="w-4 h-4" />
                 Let's Work Together
-              </button>
+              </Link>
             </div>
           </div>
         </div>

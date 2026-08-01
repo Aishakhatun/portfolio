@@ -1,16 +1,26 @@
+'use client';
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-const ThemeContext = createContext();
+const ThemeContext = createContext({
+  isDark: false,
+  toggleTheme: () => {},
+});
 
 export function ThemeProvider({ children }) {
-  const [isDark, setIsDark] = useState(() => {
-    const saved = localStorage.getItem('portfolio-theme');
-    if (saved) return saved === 'dark';
-    // Default: LIGHT mode
-    return false;
-  });
+  const [isDark, setIsDark] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+    const saved = localStorage.getItem('portfolio-theme');
+    if (saved) {
+      setIsDark(saved === 'dark');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
     localStorage.setItem('portfolio-theme', isDark ? 'dark' : 'light');
     if (isDark) {
       document.documentElement.setAttribute('data-theme', 'dark');
@@ -21,7 +31,7 @@ export function ThemeProvider({ children }) {
       document.documentElement.classList.remove('dark');
       document.body.style.background = '#f0f4ff';
     }
-  }, [isDark]);
+  }, [isDark, mounted]);
 
   const toggleTheme = () => setIsDark(v => !v);
 
@@ -34,6 +44,8 @@ export function ThemeProvider({ children }) {
 
 export function useTheme() {
   const ctx = useContext(ThemeContext);
-  if (!ctx) throw new Error('useTheme must be used inside ThemeProvider');
+  if (!ctx) {
+    return { isDark: false, toggleTheme: () => {} };
+  }
   return ctx;
 }

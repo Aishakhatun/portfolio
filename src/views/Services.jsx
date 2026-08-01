@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { Lightbulb, Sliders, Settings, BarChart3, CheckCircle2, ArrowRight, Zap, Code, Layout, Globe } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext.jsx';
