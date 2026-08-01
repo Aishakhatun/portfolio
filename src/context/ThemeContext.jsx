@@ -3,12 +3,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const ThemeContext = createContext({
-  isDark: false,
+  isDark: true,
   toggleTheme: () => {},
 });
 
 export function ThemeProvider({ children }) {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(true);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -16,11 +16,12 @@ export function ThemeProvider({ children }) {
     const saved = localStorage.getItem('portfolio-theme');
     if (saved) {
       setIsDark(saved === 'dark');
+    } else {
+      setIsDark(true);
     }
   }, []);
 
   useEffect(() => {
-    if (!mounted) return;
     localStorage.setItem('portfolio-theme', isDark ? 'dark' : 'light');
     if (isDark) {
       document.documentElement.setAttribute('data-theme', 'dark');
@@ -45,7 +46,7 @@ export function ThemeProvider({ children }) {
 export function useTheme() {
   const ctx = useContext(ThemeContext);
   if (!ctx) {
-    return { isDark: false, toggleTheme: () => {} };
+    return { isDark: true, toggleTheme: () => {} };
   }
   return ctx;
 }
