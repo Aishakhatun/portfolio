@@ -1,12 +1,14 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   ArrowRight, Sparkles, Code, Layout, Smartphone,
   Briefcase, GraduationCap, Zap, Globe, Star,
   Terminal, Eye
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext.jsx';
+import ProjectModal from '../components/ProjectModal.jsx';
 
 /* ── Typing text ────────────────────────────────────────── */
 function TypingText({ phrases }) {
@@ -47,8 +49,11 @@ function Particles() {
 /* ══════════════════════════════════════════════════════════
    HOME
    ══════════════════════════════════════════════════════════ */
-export default function Home({ setActivePage, setSelectedProject }) {
+export default function Home() {
   const { isDark } = useTheme();
+  const router = useRouter();
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState('All');
 
   /* Theme shorthands */
   const th = {
@@ -66,22 +71,42 @@ export default function Home({ setActivePage, setSelectedProject }) {
   };
 
   const projects = [
-    { id:1, title:"Interview Practice Portal", category:"Web Application", emoji:"🎯",
-      description:"Interactive interview prep platform with Q&A categories, quiz modules, and fast responsive UI.",
-      image:"/photo/my-work/work.png", tags:["HTML5","CSS3","JavaScript"],
-      highlights:["Interactive Q&A","Client-side nav","Mobile optimised","Fast loads"], demoUrl:"INTERVIEW1/demo.html" },
-    { id:2, title:"Figma UI → Code Page", category:"UI/UX Translation", emoji:"✦",
-      description:"Pixel-perfect Figma-to-code with glassmorphic elements and crisp vector assets.",
-      image:"/photo/my-work/work2.png", tags:["Figma","HTML5","CSS3"],
-      highlights:["Pixel-perfect","Custom CSS grid","Hero banner","Cross-browser"], demoUrl:"figma2/figma.html" },
-    { id:3, title:"Responsive Web App", category:"Responsive Design", emoji:"📱",
-      description:"Multi-screen fluid layout optimised for smartphones, tablets, and wide desktops.",
-      image:"/photo/my-work/work3.png", tags:["Responsive","Media Queries","Bootstrap"],
-      highlights:["Mobile-first","Touch-friendly","Optimised images","Hamburger drawer"], demoUrl:"figma responsive/figma.html" },
-    { id:4, title:"React.js Portfolio App", category:"React Web App", emoji:"⚛️",
-      description:"Production-ready React app with modular Tailwind components and smooth animations.",
-      image:"/photo/my-work/work4.png", tags:["React.js","Tailwind CSS","Vite"],
-      highlights:["Modular comps","Design tokens","Interactive modals","3D animations"], demoUrl:"#" },
+    { id: 1, title: "Raj Corporation", category: "E-Commerce & Commercial", emoji: "🏢",
+      description: "A premium corporate web platform designed for Raj Corporation, highlighting industrial infrastructure, company milestones, services, and corporate governance.",
+      image: "/photo/my-work/rajcorp.png", tags: ["React.js", "Tailwind CSS", "Corporate Web"],
+      highlights: ["Dynamic infrastructure gallery", "Modern corporate branding", "Fluid responsive layout", "Performance-optimized assets"], demoUrl: "https://rajcorp.in/", featured: true },
+    { id: 2, title: "The Wave Store", category: "E-Commerce & Commercial", emoji: "🛒",
+      description: "An elegant, highly interactive e-commerce platform for surfing, active apparel, and beach lifestyle products with smooth shopping workflows.",
+      image: "/photo/my-work/thewavestore.png", tags: ["React.js", "Tailwind CSS", "E-Commerce"],
+      highlights: ["Dynamic shopping bag", "Advanced product filtering", "Tailwind CSS styling", "Smooth layout transitions"], demoUrl: "https://www.thewavestore.in/", featured: true },
+    { id: 3, title: "Elegance Fashion", category: "E-Commerce & Commercial", emoji: "👗",
+      description: "A minimalist editorial style luxury fashion showcase featuring seasonal catalogs, brand lookbooks, and smooth page transitions.",
+      image: "/photo/my-work/elegance.png", tags: ["Next.js", "Tailwind CSS", "UX Design"],
+      highlights: ["Premium aesthetic layout", "Fluid custom image sliders", "Responsive collection grid", "Optimized media delivery"], demoUrl: "https://elegance-khaki-nu.vercel.app/" },
+    { id: 4, title: "Organic Food Store", category: "E-Commerce & Commercial", emoji: "🥗",
+      description: "A vibrant grocery storefront designed for health-conscious food shopping, featuring clean grids, organic product filters, and cart interactions.",
+      image: "/photo/my-work/organicfood.png", tags: ["React.js", "Tailwind CSS", "Responsive Web"],
+      highlights: ["Vibrant natural aesthetics", "Interactive product search", "Fully responsive design", "Fast performance scoring"], demoUrl: "https://organic-food-brown.vercel.app/" },
+    { id: 5, title: "Beautyness Luxury Spa", category: "Creative & Wellness", emoji: "💆‍♀️",
+      description: "A serene spa and beauty therapy landing page with integrated treatment pricing guides, service descriptions, and booking inquiries.",
+      image: "/photo/my-work/beautyness.png", tags: ["HTML5", "Tailwind CSS", "JavaScript"],
+      highlights: ["Tranquil user interface", "Interactive price guides", "Mobile-optimized booking flow", "Elegant typography styles"], demoUrl: "https://beautyness-luxury-spa.vercel.app/" },
+    { id: 6, title: "Interview Practice Portal", category: "Web Apps & Dev", emoji: "🎯",
+      description: "Interactive interview prep platform with Q&A categories, quiz modules, and fast responsive UI.",
+      image: "/photo/my-work/work.png", tags: ["HTML5", "CSS3", "JavaScript"],
+      highlights: ["Interactive Q&A", "Client-side nav", "Mobile optimised", "Fast loads"], demoUrl: "INTERVIEW1/demo.html" },
+    { id: 7, title: "Figma UI → Code Page", category: "Web Apps & Dev", emoji: "✦",
+      description: "Pixel-perfect Figma-to-code with glassmorphic elements and crisp vector assets.",
+      image: "/photo/my-work/work2.png", tags: ["Figma", "HTML5", "CSS3"],
+      highlights: ["Pixel-perfect", "Custom CSS grid", "Hero banner", "Cross-browser"], demoUrl: "figma2/figma.html" },
+    { id: 8, title: "Responsive Web App", category: "Creative & Wellness", emoji: "📱",
+      description: "Multi-screen fluid layout optimised for smartphones, tablets, and wide desktops.",
+      image: "/photo/my-work/work3.png", tags: ["Responsive", "Media Queries", "Bootstrap"],
+      highlights: ["Mobile-first", "Touch-friendly", "Optimised images", "Hamburger drawer"], demoUrl: "figma responsive/figma.html" },
+    { id: 9, title: "React.js Portfolio App", category: "Web Apps & Dev", emoji: "⚛️",
+      description: "Production-ready React app with modular Tailwind components and smooth animations.",
+      image: "/photo/my-work/work4.png", tags: ["React.js", "Tailwind CSS", "Vite"],
+      highlights: ["Modular comps", "Design tokens", "Interactive modals", "3D animations"], demoUrl: "#" },
   ];
 
   const stats = [
@@ -156,7 +181,7 @@ export default function Home({ setActivePage, setSelectedProject }) {
             {/* CTAs */}
             <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
               <button
-                onClick={() => setActivePage('services')}
+                onClick={() => router.push('/services')}
                 className="group relative px-8 py-4 rounded-full text-white font-bold text-sm overflow-hidden cursor-pointer transition-all hover:scale-105 shadow-lg shadow-indigo-500/30"
               >
                 <span className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-violet-600 to-cyan-500"></span>
@@ -166,7 +191,7 @@ export default function Home({ setActivePage, setSelectedProject }) {
                 </span>
               </button>
               <button
-                onClick={() => setActivePage('contact')}
+                onClick={() => router.push('/contact')}
                 className={`px-8 py-4 rounded-full glass border font-semibold text-sm transition-all hover:scale-105 cursor-pointer btn-glow ${
                   isDark ? 'border-white/15 text-slate-300 hover:text-white hover:border-indigo-500/60'
                          : 'border-indigo-200 text-indigo-700 hover:text-indigo-900 hover:border-indigo-400'
@@ -186,8 +211,8 @@ export default function Home({ setActivePage, setSelectedProject }) {
           </div>
 
           {/* Right: 3D Visual */}
-          <div className="flex items-center justify-center fade-in-up-delay relative">
-            <div className="relative w-[360px] h-[360px]">
+          <div className="flex items-center justify-center fade-in-up-delay relative w-full max-w-full overflow-hidden">
+            <div className="relative w-[360px] h-[360px] scale-75 sm:scale-95 md:scale-100 origin-center transition-all duration-300 flex-shrink-0">
               <div className="scan-line" style={{zIndex:5}}></div>
               <div className="ring absolute inset-0"></div>
 
@@ -257,50 +282,83 @@ export default function Home({ setActivePage, setSelectedProject }) {
             <h2 className={`text-4xl sm:text-5xl font-extrabold font-outfit leading-tight ${th.h}`}>
               Featured <span className="gradient-text">Projects</span>
             </h2>
-            <p className={`text-sm ${th.muted}`}>Click any card to explore project details</p>
+            <p className={`text-sm ${th.muted}`}>Click any card to explore details or view an interactive live preview</p>
           </div>
-          <button onClick={()=>setActivePage('services')} className="text-sm font-bold text-indigo-500 hover:text-indigo-400 flex items-center gap-1.5 group cursor-pointer self-start">
+          <button onClick={()=>router.push('/services')} className="text-sm font-bold text-indigo-500 hover:text-indigo-400 flex items-center gap-1.5 group cursor-pointer self-start">
             All Services <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform"/>
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
-          {projects.map((project)=>(
-            <div
-              key={project.id}
-              onClick={()=>setSelectedProject(project)}
-              className="group th-card shimmer-card overflow-hidden cursor-pointer card-lift transition-all duration-500"
+        {/* Category Tabs */}
+        <div className="flex flex-wrap gap-2.5 pb-4 border-b" style={{ borderColor: 'var(--border)' }}>
+          {['All', 'E-Commerce & Commercial', 'Creative & Wellness', 'Web Apps & Dev'].map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
+              className={`px-5 py-2.5 rounded-full text-xs font-bold font-outfit transition-all duration-300 cursor-pointer ${
+                selectedCategory === cat
+                  ? 'bg-gradient-to-r from-indigo-600 via-violet-600 to-cyan-500 text-white shadow-md shadow-indigo-500/25'
+                  : isDark
+                    ? 'bg-slate-900/60 text-slate-400 border border-white/5 hover:text-white hover:bg-slate-800/80'
+                    : 'bg-white text-slate-600 border border-slate-200 hover:text-indigo-600 hover:border-indigo-200 shadow-sm'
+              }`}
             >
-              {/* Image */}
-              <div className="relative h-52 overflow-hidden" style={{background:'var(--bg-surface)'}}>
-                <div className="scan-line opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <img src={project.image} alt={project.title}
-                  className="w-full h-full object-cover object-top opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
-                  onError={(e)=>{e.target.src=project.image.replace(/^\//,'');}}/>
-                <div className={`absolute inset-0 bg-gradient-to-t ${isDark?'from-slate-950 via-slate-950/50':'from-white via-white/30'} to-transparent`}></div>
-                <div className="absolute top-4 left-4">
-                  <span className={`px-3 py-1 rounded-full text-[10px] font-bold glass border ${isDark?'border-white/10 text-slate-300':'border-white/60 text-slate-700'}`}>{project.category}</span>
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
+          {projects
+            .filter((p) => selectedCategory === 'All' || p.category === selectedCategory)
+            .map((project)=>(
+              <div
+                key={project.id}
+                onClick={()=>setSelectedProject(project)}
+                className="group th-card shimmer-card overflow-hidden cursor-pointer card-lift transition-all duration-500 relative"
+              >
+                {/* Image */}
+                <div className="relative h-52 overflow-hidden" style={{background:'var(--bg-surface)'}}>
+                  <div className="scan-line opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <img src={project.image} alt={project.title}
+                    className="w-full h-full object-cover object-top opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                    onError={(e)=>{e.target.src=project.image.replace(/^\//,'');}}/>
+                  <div className={`absolute inset-0 bg-gradient-to-t ${isDark?'from-slate-950 via-slate-950/50':'from-white via-white/30'} to-transparent`}></div>
+                  
+                  {/* Category Badge */}
+                  <div className="absolute top-4 left-4">
+                    <span className={`px-3 py-1 rounded-full text-[10px] font-bold glass border ${isDark?'border-white/10 text-slate-300':'border-white/60 text-slate-700'}`}>{project.category}</span>
+                  </div>
+
+                  {/* High Priority Badge */}
+                  {project.featured && (
+                    <div className="absolute top-4 right-4 z-10">
+                      <span className="px-3 py-1 rounded-full text-[9px] font-black bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white uppercase tracking-wider shadow-lg animate-pulse flex items-center gap-1 border border-white/20">
+                        🔥 High Priority
+                      </span>
+                    </div>
+                  )}
+
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
+                    <div className="px-5 py-2.5 rounded-full glass-strong text-white text-xs font-bold flex items-center gap-2 shadow-xl border border-white/20 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 bg-indigo-600/80">
+                      <Eye className="w-3.5 h-3.5"/> View Details &amp; Preview
+                    </div>
+                  </div>
                 </div>
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
-                  <div className="px-5 py-2.5 rounded-full glass-strong text-white text-xs font-bold flex items-center gap-2 shadow-xl border border-white/20 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 bg-indigo-600/80">
-                    <Eye className="w-3.5 h-3.5"/> View Details
+
+                {/* Content */}
+                <div className="p-7 space-y-4">
+                  <div className="flex items-center gap-3">
+                    <span className="text-3xl">{project.emoji}</span>
+                    <h3 className={`text-xl font-bold font-outfit group-hover:text-indigo-600 transition-colors ${th.h}`}>{project.title}</h3>
+                  </div>
+                  <p className={`text-sm leading-relaxed line-clamp-2 ${th.p}`}>{project.description}</p>
+                  <div className="flex flex-wrap gap-2 pt-1 border-t" style={{borderColor:'var(--border)'}}>
+                    {project.tags.map((tag,i)=><span key={i} className="th-tag">{tag}</span>)}
                   </div>
                 </div>
               </div>
-
-              {/* Content */}
-              <div className="p-7 space-y-4">
-                <div className="flex items-center gap-3">
-                  <span className="text-3xl">{project.emoji}</span>
-                  <h3 className={`text-xl font-bold font-outfit group-hover:text-indigo-600 transition-colors ${th.h}`}>{project.title}</h3>
-                </div>
-                <p className={`text-sm leading-relaxed line-clamp-2 ${th.p}`}>{project.description}</p>
-                <div className="flex flex-wrap gap-2 pt-1 border-t" style={{borderColor:'var(--border)'}}>
-                  {project.tags.map((tag,i)=><span key={i} className="th-tag">{tag}</span>)}
-                </div>
-              </div>
-            </div>
-          ))}
+            ))}
         </div>
       </section>
 
@@ -362,7 +420,7 @@ export default function Home({ setActivePage, setSelectedProject }) {
             </p>
           </div>
           <button
-            onClick={()=>setActivePage('contact')}
+            onClick={()=>router.push('/contact')}
             className="shrink-0 group relative px-10 py-5 rounded-full text-white font-extrabold text-base overflow-hidden cursor-pointer transition-all hover:scale-105 shadow-xl shadow-indigo-500/30"
           >
             <span className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-violet-600 to-cyan-500"></span>
@@ -374,6 +432,11 @@ export default function Home({ setActivePage, setSelectedProject }) {
           </button>
         </div>
       </section>
+
+      {/* ── PROJECT MODAL ── */}
+      {selectedProject && (
+        <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
+      )}
 
     </div>
   );

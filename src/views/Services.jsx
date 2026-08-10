@@ -1,10 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Lightbulb, Sliders, Settings, BarChart3, CheckCircle2, ArrowRight, Zap, Code, Layout, Globe } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext.jsx';
 
-export default function Services({ setActivePage }) {
+export default function Services() {
+  const router = useRouter();
   const { isDark } = useTheme();
   const [projectType, setProjectType] = useState('landing');
   const [responsiveNeeded, setResponsiveNeeded] = useState(true);
@@ -238,7 +240,7 @@ export default function Services({ setActivePage }) {
               </div>
               <p className={`text-xs ${th.muted}`}>Includes design, development, and testing.</p>
               <button
-                onClick={() => setActivePage('contact')}
+                onClick={() => router.push('/contact')}
                 className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-bold text-sm hover:shadow-lg transition-shadow shadow-md cursor-pointer"
               >
                 Start This Project →
