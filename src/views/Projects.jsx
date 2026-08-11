@@ -43,10 +43,10 @@ export default function Projects() {
       description: "A serene spa and beauty therapy landing page with integrated treatment pricing guides, service descriptions, and booking inquiries.",
       image: "/photo/my-work/beautyness.png", tags: ["HTML5", "Tailwind CSS", "JavaScript"],
       highlights: ["Tranquil user interface", "Interactive price guides", "Mobile-optimized booking flow", "Elegant typography styles"], demoUrl: "https://beautyness-luxury-spa.vercel.app/" },
-    { id: 9, title: "React.js Portfolio App", category: "Web Apps & Dev", emoji: "⚛️",
-      description: "Production-ready React app with modular Tailwind components and smooth animations.",
-      image: "/photo/my-work/work4.png", tags: ["React.js", "Tailwind CSS", "Vite"],
-      highlights: ["Modular components", "Design token variables", "Clean interfaces", "Fine animations"], demoUrl: "#" },
+    { id: 9, title: "Fitness Gym", category: "Creative & Wellness", emoji: "💪",
+      description: "A modern, high-energy landing page for a premium fitness center, featuring interactive workout program cards, trainer highlights, and mobile-optimized class pricing lists.",
+      image: "/photo/my-work/work4.png", tags: ["HTML5", "CSS3", "JavaScript"],
+      highlights: ["Bold athletic design", "Engaging pricing cards", "Interactive program listings", "Smooth scroll animations"], demoUrl: "#" },
   ];
 
   const getTagStyle = (tag) => {

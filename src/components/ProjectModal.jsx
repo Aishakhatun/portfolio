@@ -6,8 +6,17 @@ import { useTheme } from '../context/ThemeContext.jsx';
 
 export default function ProjectModal({ project, onClose }) {
   const { isDark } = useTheme();
+
+  const isIframeBlocked = project ? (
+    project.demoUrl === '#' ||
+    project.demoUrl.includes('rajcorp.in') ||
+    project.demoUrl.includes('thewavestore.in')
+  ) : true;
+
   const hasDemo = project ? (project.demoUrl && project.demoUrl !== '#') : false;
-  const [mode, setMode] = useState(hasDemo ? 'preview' : 'info'); // 'info' | 'preview'
+
+  const [mode, setMode] = useState('preview'); // 'info' | 'preview'
+  const [previewType, setPreviewType] = useState(isIframeBlocked ? 'static' : 'iframe'); // 'static' | 'iframe'
   const [device, setDevice] = useState('desktop'); // 'desktop' | 'tablet' | 'mobile'
   const [refreshKey, setRefreshKey] = useState(0);
 
@@ -96,21 +105,23 @@ export default function ProjectModal({ project, onClose }) {
               {/* Actions */}
               <div className="pt-4 flex items-center justify-between gap-4 border-t" style={{borderColor:'var(--border)'}}>
                 <div className="flex items-center gap-3">
-                  {project.demoUrl && project.demoUrl!=='#' && (
+                  {project.demoUrl && (
                     <>
                       <button
                         onClick={() => setMode('preview')}
                         className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white text-sm font-bold flex items-center gap-2 shadow-md shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all hover:scale-102 cursor-pointer"
                       >
-                        Interactive Preview <Eye className="w-4 h-4"/>
+                        Project Preview <Eye className="w-4 h-4"/>
                       </button>
-                      <a href={project.demoUrl} target="_blank" rel="noreferrer"
-                        className={`px-5 py-2.5 rounded-xl border text-sm font-bold flex items-center gap-2 transition-colors cursor-pointer ${
-                          isDark ? 'border-white/10 text-slate-300 hover:text-white hover:bg-white/5'
-                                 : 'border-slate-200 text-slate-700 hover:text-indigo-600 hover:bg-slate-50'
-                        }`}>
-                        Open in New Tab <ExternalLink className="w-4 h-4"/>
-                      </a>
+                      {hasDemo && (
+                        <a href={project.demoUrl} target="_blank" rel="noreferrer"
+                          className={`px-5 py-2.5 rounded-xl border text-sm font-bold flex items-center gap-2 transition-colors cursor-pointer ${
+                            isDark ? 'border-white/10 text-slate-300 hover:text-white hover:bg-white/5'
+                                   : 'border-slate-200 text-slate-700 hover:text-indigo-600 hover:bg-slate-50'
+                          }`}>
+                          Open in New Tab <ExternalLink className="w-4 h-4"/>
+                        </a>
+                      )}
                     </>
                   )}
                 </div>
@@ -136,7 +147,7 @@ export default function ProjectModal({ project, onClose }) {
               </button>
 
               {/* Center: Device Switcher */}
-              <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-800/10 border border-slate-800/15 backdrop-blur-md">
+              <div className="hidden md:flex items-center gap-1.5 p-1 rounded-xl bg-slate-800/10 border border-slate-800/15 backdrop-blur-md">
                 {[
                   { id: 'desktop', icon: Laptop, label: 'Desktop View' },
                   { id: 'tablet', icon: Tablet, label: 'Tablet View' },
@@ -162,31 +173,48 @@ export default function ProjectModal({ project, onClose }) {
                 })}
               </div>
 
-              {/* Right: Refresh, Open link */}
+              {/* Right: Toggle Preview, Refresh, Open link */}
               <div className="flex items-center gap-2">
-                <button
-                  onClick={handleRefresh}
-                  title="Refresh Preview"
-                  className={`p-2 rounded-xl border transition-all cursor-pointer ${
-                    isDark ? 'border-white/10 text-slate-400 hover:text-white hover:bg-white/5'
-                           : 'border-slate-200 text-slate-500 hover:text-indigo-600 hover:bg-slate-50'
-                  }`}
-                >
-                  <RefreshCw className="w-4 h-4" />
-                </button>
+                {hasDemo && !isIframeBlocked && (
+                  <button
+                    onClick={() => setPreviewType(prev => prev === 'iframe' ? 'static' : 'iframe')}
+                    title={previewType === 'iframe' ? 'Switch to Static Image' : 'Switch to Live Iframe'}
+                    className={`px-3 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+                      isDark ? 'border-white/10 text-slate-300 hover:bg-white/5 hover:text-white'
+                             : 'border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-indigo-600'
+                    }`}
+                  >
+                    {previewType === 'iframe' ? '🖼️ Static Preview' : '🌐 Interactive Live'}
+                  </button>
+                )}
 
-                <a
-                  href={project.demoUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  title="Open Website in New Tab"
-                  className={`p-2 rounded-xl border transition-all cursor-pointer flex items-center justify-center ${
-                    isDark ? 'border-white/10 text-slate-400 hover:text-white hover:bg-white/5'
-                           : 'border-slate-200 text-slate-500 hover:text-indigo-600 hover:bg-slate-50'
-                  }`}
-                >
-                  <ExternalLink className="w-4 h-4" />
-                </a>
+                {previewType === 'iframe' && hasDemo && (
+                  <button
+                    onClick={handleRefresh}
+                    title="Refresh Preview"
+                    className={`p-2 rounded-xl border transition-all cursor-pointer ${
+                      isDark ? 'border-white/10 text-slate-400 hover:text-white hover:bg-white/5'
+                             : 'border-slate-200 text-slate-500 hover:text-indigo-600 hover:bg-slate-50'
+                    }`}
+                  >
+                    <RefreshCw className="w-4 h-4" />
+                  </button>
+                )}
+
+                {hasDemo && (
+                  <a
+                    href={project.demoUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    title="Open Website in New Tab"
+                    className={`p-2 rounded-xl border transition-all cursor-pointer flex items-center justify-center ${
+                      isDark ? 'border-white/10 text-slate-400 hover:text-white hover:bg-white/5'
+                             : 'border-slate-200 text-slate-500 hover:text-indigo-600 hover:bg-slate-50'
+                    }`}
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                )}
               </div>
             </div>
 
@@ -200,7 +228,7 @@ export default function ProjectModal({ project, onClose }) {
                 }}
               >
                 <span className="text-emerald-500 font-bold">https://</span>
-                {project.demoUrl.replace(/^https?:\/\//, '')}
+                {project.demoUrl === '#' ? `${project.title.toLowerCase().replace(/\s+/g, '')}.local` : project.demoUrl.replace(/^https?:\/\//, '')}
               </div>
             </div>
 
@@ -215,15 +243,17 @@ export default function ProjectModal({ project, onClose }) {
               }}
             >
               {/* Fallback info bar */}
-              <div className="w-full max-w-2xl mb-4 p-3 rounded-xl border text-center text-[11px] flex items-center justify-center gap-2 backdrop-blur-md"
-                style={{
-                  borderColor: isDark ? 'rgba(99,102,241,0.15)' : 'rgba(99,102,241,0.2)',
-                  backgroundColor: isDark ? 'rgba(99,102,241,0.04)' : 'rgba(99,102,241,0.03)',
-                  color: isDark ? '#a5b4fc' : '#4f46e5'
-                }}
-              >
-                <span>💡 If the preview is blank or doesn't load, please click the <strong>Open Website in New Tab</strong> button to view it directly.</span>
-              </div>
+              {previewType === 'iframe' && (
+                <div className="w-full max-w-2xl mb-4 p-3 rounded-xl border text-center text-[11px] flex items-center justify-center gap-2 backdrop-blur-md"
+                  style={{
+                    borderColor: isDark ? 'rgba(99,102,241,0.15)' : 'rgba(99,102,241,0.2)',
+                    backgroundColor: isDark ? 'rgba(99,102,241,0.04)' : 'rgba(99,102,241,0.03)',
+                    color: isDark ? '#a5b4fc' : '#4f46e5'
+                  }}
+                >
+                  <span>💡 If the preview is blank or doesn't load, please click the <strong>Open Website in New Tab</strong> button to view it directly.</span>
+                </div>
+              )}
 
               {/* Viewport Frame */}
               <div
@@ -238,14 +268,24 @@ export default function ProjectModal({ project, onClose }) {
                   backgroundColor: '#ffffff'
                 }}
               >
-                <iframe
-                  key={refreshKey}
-                  src={project.demoUrl}
-                  title={project.title}
-                  className="w-full h-full border-none bg-white"
-                  sandbox="allow-scripts allow-same-origin allow-forms"
-                  loading="lazy"
-                />
+                {previewType === 'iframe' && project.demoUrl !== '#' ? (
+                  <iframe
+                    key={refreshKey}
+                    src={project.demoUrl}
+                    title={project.title}
+                    className="w-full h-full border-none bg-white"
+                    sandbox="allow-scripts allow-same-origin allow-forms"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="w-full h-full overflow-y-auto bg-slate-900 scrollbar-thin select-none">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-auto object-cover object-top pointer-events-none"
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>
