@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Mail, MapPin, Send, CheckCircle, AlertCircle, Clock, Globe } from 'lucide-react';
+import { Mail, MapPin, Send, CheckCircle, AlertCircle, Clock, Globe, MessageSquare } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext.jsx';
 
 export default function Contact() {
