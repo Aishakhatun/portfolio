@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, Linkedin, Github, Instagram, Twitter, Facebook, MessageSquare, Clock, Zap, Globe } from 'lucide-react';
+import { Mail, MapPin, Send, CheckCircle, AlertCircle, Clock, Globe } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext.jsx';
 
 export default function Contact() {
@@ -81,11 +81,6 @@ export default function Contact() {
     { icon:MapPin, label:'Location', value:'Himatnagar, Gujarat',     sub:'India — PIN 383001',        href:'https://maps.google.com/?q=Himatnagar', gradient:'from-amber-500 to-orange-500' },
   ];
 
-  const socials = [
-    { icon:Linkedin,  label:'LinkedIn',  href:'https://linkedin.com'  },
-    { icon:Github,    label:'GitHub',    href:'https://github.com'    },
-    { icon:Instagram, label:'Instagram', href:'https://instagram.com' },
-  ];
 
   return (
     <div className="space-y-24 pb-24 pt-4">
@@ -232,23 +227,6 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Social links */}
-          <div className="th-card p-6 space-y-4">
-            <h3 className={`text-lg font-bold font-outfit ${th.h}`}>Social Media</h3>
-            <div className="space-y-2">
-              {socials.map((s,idx)=>{
-                const Icon=s.icon;
-                return (
-                  <a key={idx} href={s.href} target="_blank" rel="noreferrer"
-                    className={`flex items-center gap-4 px-4 py-3 rounded-xl glass border th-text-2 text-sm font-semibold transition-all ${th.socialHover}`}
-                    style={{borderColor:'var(--border)'}}
-                  >
-                    <Icon className="w-5 h-5 shrink-0"/><span>{s.label}</span>
-                  </a>
-                );
-              })}
-            </div>
-          </div>
 
 
 
