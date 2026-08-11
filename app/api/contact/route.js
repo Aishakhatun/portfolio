@@ -9,7 +9,6 @@ async function connectDB() {
     return;
   }
   const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/portfolio';
-  // Let connection errors bubble up to POST so we can report them to the client
   await mongoose.connect(MONGODB_URI, {
     serverSelectionTimeoutMS: 5000,
   });
@@ -50,80 +49,79 @@ export async function POST(req) {
     const newInquiry = await ContactInquiry.create({ name, email, subject, message });
     console.log(' New inquiry saved to MongoDB:', newInquiry._id);
 
-    // 2. Email Notification via Gmail Nodemailer (Non-blocking background process)
+    // 2. Email Notification via Gmail Nodemailer (Awaited with fast connection timeouts for Serverless compatibility)
     const emailUser = process.env.EMAIL_USER;
     const emailPass = process.env.EMAIL_PASS;
     const receiverEmail = process.env.RECEIVER_EMAIL || emailUser;
+    let emailStatus = 'skipped';
 
     if (emailUser && emailPass && emailPass !== 'your_gmail_app_password_here') {
-      const sendEmailInBackground = async () => {
-        try {
-          const transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com',
-            port: 465,
-            secure: true,
-            auth: {
-              user: emailUser,
-              pass: emailPass,
-            },
-            connectionTimeout: 5000,
-            greetingTimeout: 5000,
-            socketTimeout: 5000,
-          });
+      try {
+        const transporter = nodemailer.createTransport({
+          host: 'smtp.gmail.com',
+          port: 465,
+          secure: true,
+          auth: {
+            user: emailUser,
+            pass: emailPass,
+          },
+          // Fast connection timeouts to prevent Vercel route timeout hangs
+          connectionTimeout: 5000,
+          greetingTimeout: 5000,
+          socketTimeout: 5000,
+        });
 
-          const mailOptions = {
-            from: `"Portfolio Contact Form" <${emailUser}>`,
-            to: receiverEmail,
-            replyTo: email,
-            subject: `Portfolio Inquiry: ${subject} (from ${name})`,
-            html: `
-              <div style="font-family: Arial, sans-serif; max-width: 600px; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
-                <h2 style="color: #4f46e5; margin-top: 0;">New Contact Form Submission</h2>
-                <p>You have received a new inquiry from your Next.js portfolio website.</p>
-                <hr style="border: 0; border-top: 1px solid #eeeeee; margin: 20px 0;" />
-                <table style="width: 100%; border-collapse: collapse;">
-                  <tr>
-                    <td style="padding: 8px 0; font-weight: bold; width: 100px;">Name:</td>
-                    <td style="padding: 8px 0;">${name}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 8px 0; font-weight: bold;">Email:</td>
-                    <td style="padding: 8px 0;"><a href="mailto:${email}">${email}</a></td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 8px 0; font-weight: bold;">Subject:</td>
-                    <td style="padding: 8px 0;">${subject}</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 8px 0; font-weight: bold; vertical-align: top;">Message:</td>
-                    <td style="padding: 8px 0; white-space: pre-wrap;">${message}</td>
-                  </tr>
-                </table>
-                <hr style="border: 0; border-top: 1px solid #eeeeee; margin: 20px 0;" />
-                <p style="font-size: 12px; color: #888888;">Saved in MongoDB collection <strong>aisha-contactInquiry</strong> at ${new Date().toLocaleString()}</p>
-              </div>
-            `,
-          };
+        const mailOptions = {
+          from: `"Portfolio Contact Form" <${emailUser}>`,
+          to: receiverEmail,
+          replyTo: email,
+          subject: `Portfolio Inquiry: ${subject} (from ${name})`,
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
+              <h2 style="color: #4f46e5; margin-top: 0;">New Contact Form Submission</h2>
+              <p>You have received a new inquiry from your Next.js portfolio website.</p>
+              <hr style="border: 0; border-top: 1px solid #eeeeee; margin: 20px 0;" />
+              <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                  <td style="padding: 8px 0; font-weight: bold; width: 100px;">Name:</td>
+                  <td style="padding: 8px 0;">${name}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; font-weight: bold;">Email:</td>
+                  <td style="padding: 8px 0;"><a href="mailto:${email}">${email}</a></td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; font-weight: bold;">Subject:</td>
+                  <td style="padding: 8px 0;">${subject}</td>
+                </tr>
+                <tr>
+                  <td style="padding: 8px 0; font-weight: bold; vertical-align: top;">Message:</td>
+                  <td style="padding: 8px 0; white-space: pre-wrap;">${message}</td>
+                </tr>
+              </table>
+              <hr style="border: 0; border-top: 1px solid #eeeeee; margin: 20px 0;" />
+              <p style="font-size: 12px; color: #888888;">Saved in MongoDB database at ${new Date().toLocaleString()}</p>
+            </div>
+          `,
+        };
 
-          await transporter.sendMail(mailOptions);
-          console.log(' Gmail notification sent successfully in background.');
-        } catch (mailErr) {
-          console.error(' Background Nodemailer Error:', mailErr.message);
-        }
-      };
-
-      sendEmailInBackground();
+        await transporter.sendMail(mailOptions);
+        emailStatus = 'sent';
+        console.log(' Gmail notification sent successfully.');
+      } catch (mailErr) {
+        console.error(' Nodemailer Error:', mailErr.message);
+        emailStatus = `failed: ${mailErr.message}`;
+      }
     }
 
     return NextResponse.json({
       success: true,
       message: 'Inquiry submitted successfully!',
       inquiryId: newInquiry._id,
-      emailStatus: 'sent_async',
+      emailStatus,
     });
   } catch (err) {
     console.error(' Server Error handling contact form:', err);
-    // Return detailed error message (like auth failure or timeout) so user can see why connection failed
     return NextResponse.json({
       success: false,
       error: `Server Error: ${err.message || 'Internal Server Error'}`
