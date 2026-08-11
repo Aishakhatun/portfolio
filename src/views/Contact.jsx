@@ -31,7 +31,7 @@ export default function Contact() {
     if (!form.name.trim()) e.name='Name is required';
     if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email='Valid email required';
     if (!form.subject.trim()) e.subject='Subject is required';
-    if (!form.message.trim() || form.message.length<10) e.message='Min 10 characters required';
+    if (!form.message.trim()) e.message='Message is required';
     return e;
   };
 
