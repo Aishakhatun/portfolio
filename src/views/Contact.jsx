@@ -78,7 +78,6 @@ export default function Contact() {
 
   const contactCards = [
     { icon:Mail,   label:'Email',    value:'aishasabugar1@gmail.com', sub:'Replies within 24 hours', href:'mailto:aishasabugar1@gmail.com', gradient:'from-indigo-500 to-violet-600' },
-    { icon:Phone,  label:'Phone',    value:'+91-9426046258',          sub:'Mon–Sat, 10AM–7PM IST',    href:'tel:+919426046258',             gradient:'from-emerald-500 to-teal-600' },
     { icon:MapPin, label:'Location', value:'Himatnagar, Gujarat',     sub:'India — PIN 383001',        href:'https://maps.google.com/?q=Himatnagar', gradient:'from-amber-500 to-orange-500' },
   ];
 
@@ -86,20 +85,18 @@ export default function Contact() {
     { icon:Linkedin,  label:'LinkedIn',  href:'https://linkedin.com'  },
     { icon:Github,    label:'GitHub',    href:'https://github.com'    },
     { icon:Instagram, label:'Instagram', href:'https://instagram.com' },
-    { icon:Twitter,   label:'Twitter/X', href:'https://twitter.com'   },
-    { icon:Facebook,  label:'Facebook',  href:'https://facebook.com'  },
   ];
 
   return (
-    <div className="space-y-16 pb-20 pt-4">
+    <div className="space-y-24 pb-24 pt-4">
 
       {/* PAGE HEADER */}
       <div className="text-center max-w-3xl mx-auto space-y-4 fade-in-up">
         <span className={`px-4 py-2 rounded-full text-xs font-bold glass border border-indigo-500/30 inline-block ${isDark?'text-indigo-300':'text-indigo-600'}`}>
-          Let's Connect
+          Get In Touch
         </span>
         <h1 className={`text-5xl sm:text-6xl font-extrabold font-outfit leading-tight ${th.h}`}>
-          Get In <span className="gradient-text">Touch</span>
+          Let's Start a <span className="gradient-text">Project</span>
         </h1>
         <p className={`text-base leading-relaxed ${th.p}`}>
           Have a project idea, collaboration opportunity, or just want to say hello? Let's build something remarkable together.
@@ -107,7 +104,7 @@ export default function Contact() {
       </div>
 
       {/* CONTACT CARDS */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
         {contactCards.map((card,idx)=>{
           const Icon=card.icon;
           return (
@@ -129,7 +126,7 @@ export default function Contact() {
       </div>
 
       {/* FORM + SIDEBAR */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
         {/* Form */}
         <div className="lg:col-span-7">
@@ -253,19 +250,7 @@ export default function Contact() {
             </div>
           </div>
 
-          {/* Quote */}
-          <div className={`p-6 rounded-3xl space-y-4 ${th.quote}`}>
-            <p className={`text-sm italic leading-relaxed ${th.p}`}>
-              "Every website is a conversation. I design ones that speak clearly, look beautiful, and leave lasting impressions."
-            </p>
-            <div className={`flex items-center gap-3 pt-1 border-t`} style={{borderColor:'var(--border)'}}>
-              <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-indigo-600 to-cyan-500 flex items-center justify-center text-white font-bold text-sm font-outfit shadow-md">A</div>
-              <div>
-                <span className={`text-sm font-bold block ${th.h}`}>Aisha Sabugar</span>
-                <span className={`text-xs ${th.muted}`}>Web Designer & Front-End Developer</span>
-              </div>
-            </div>
-          </div>
+
 
         </div>
       </div>

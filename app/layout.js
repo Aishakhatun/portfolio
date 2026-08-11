@@ -7,6 +7,9 @@ import ThreeBackground from '../src/components/ThreeBackground.jsx';
 export const metadata = {
   title: 'Aisha Sabugar — Web Designer & Front-End Developer',
   description: 'Portfolio of Aisha Sabugar — Web Designer, Developer & Front-End Specialist crafting modern digital experiences.',
+  icons: {
+    icon: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({ children }) {

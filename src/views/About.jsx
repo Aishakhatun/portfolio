@@ -1,15 +1,21 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   User, MapPin, Phone, Mail, GraduationCap, Briefcase,
-  Code, Award, BookOpen, Heart, Terminal, Layout, Star
+  Code, Award, BookOpen, Heart, Terminal, Layout, Star,
+  Lightbulb, Sliders, Settings, BarChart3, CheckCircle2, ArrowRight, Zap, Globe
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext.jsx';
 
 export default function About() {
+  const router = useRouter();
   const { isDark } = useTheme();
   const [activeTab, setActiveTab] = useState('all');
+  const [projectType, setProjectType] = useState('landing');
+  const [responsiveNeeded, setResponsiveNeeded] = useState(true);
+  const [reactNeeded, setReactNeeded] = useState(true);
 
   const th = {
     h:    isDark ? 'text-white'     : 'text-slate-900',
@@ -18,6 +24,62 @@ export default function About() {
     sect: isDark
       ? 'bg-gradient-to-br from-indigo-950/80 via-violet-950/60 to-cyan-950/60'
       : 'bg-gradient-to-br from-indigo-50 via-violet-50/70 to-cyan-50/60',
+    estimatorBg: isDark
+      ? 'bg-gradient-to-br from-indigo-950 via-slate-950 to-violet-950'
+      : 'bg-gradient-to-br from-indigo-50 via-white to-violet-50/80',
+    selectCls: isDark
+      ? 'bg-slate-900 text-slate-200 border-slate-700 focus:border-indigo-500'
+      : 'bg-white text-slate-800 border-slate-200 focus:border-indigo-400',
+    resultBg: isDark
+      ? 'bg-indigo-600/20 border border-indigo-500/30'
+      : 'bg-indigo-600/10 border border-indigo-300/50',
+    estimatorPanel: isDark
+      ? 'glass border border-white/10'
+      : 'bg-white/80 border border-indigo-100 shadow-sm',
+    num:   isDark ? 'text-indigo-900' : 'text-indigo-200',
+  };
+
+  const services = [
+    { id:"web-design", icon:Lightbulb, title:"Web Designing & UI/UX", subtitle:"Clean & Responsive",
+      gradient:"from-amber-500 to-orange-500",
+      description:"Clean, responsive, and user-friendly websites that look amazing, load fast, and guide users intuitively.",
+      features:["Semantic HTML5 & Modern CSS3","Mobile-first responsive","Performance optimised","Cross-browser compatible"],
+      backDesc:"Translating design concepts into clean, standards-compliant HTML/CSS implementations that work on every device.",
+      backTags:["HTML5","CSS3","Flexbox","Grid"] },
+    { id:"creative-ideas", icon:Sliders, title:"Creative Concepts & Prototyping", subtitle:"Visual Storytelling",
+      gradient:"from-violet-500 to-indigo-600",
+      description:"Every color has a mood, every layout has a reason, every interaction should feel effortless.",
+      features:["Figma design to code","Harmonious color palettes","Glassmorphism & micro-animations","Interactive UI prototypes"],
+      backDesc:"From wireframes or Figma exports, I translate high-fidelity designs into fully interactive, animated web pages.",
+      backTags:["Figma","Animations","Prototyping","UX"] },
+    { id:"react-arch", icon:Settings, title:"React Component Architecture", subtitle:"Modular & Scalable",
+      gradient:"from-cyan-500 to-blue-600",
+      description:"Modular, well-structured React codebases using Tailwind design tokens and scalable state management.",
+      features:["Reusable React JSX components","Tailwind CSS design tokens","Scalable project structure","State management patterns"],
+      backDesc:"Building component libraries and React apps that are easy to maintain, extend, and deploy using Vite & Tailwind.",
+      backTags:["React.js","Tailwind","Vite","JavaScript"] },
+    { id:"admin", icon:BarChart3, title:"Admin Dashboards & Web Apps", subtitle:"Data Management UI",
+      gradient:"from-emerald-500 to-teal-600",
+      description:"Custom admin portals and dashboards to manage users, content, and analytics from one central interface.",
+      features:["Interactive tables & filters","Form validation & modals","Status badges & metric cards","Dashboard grid layouts"],
+      backDesc:"From content management to complex data dashboards — I design admin interfaces that are powerful yet easy to use.",
+      backTags:["Dashboards","Forms","Tables","Analytics UI"] },
+  ];
+
+  const processSteps = [
+    { step:"01", title:"Discovery",       desc:"Understanding goals, audience, and scope before writing any code.", icon:Globe   },
+    { step:"02", title:"UI/UX Design",    desc:"Visual concepts, layout grids, color palettes, and glassmorphic elements.", icon:Layout  },
+    { step:"03", title:"Development",     desc:"Modular components, Tailwind tokens, smooth interactions, and accessibility.", icon:Code    },
+    { step:"04", title:"Launch & Test",   desc:"Cross-device testing, performance optimisation, and final deployment.", icon:Zap     },
+  ];
+
+  const getEstimate = () => {
+    let days = 3;
+    if (projectType==='webapp') days+=5;
+    if (projectType==='dashboard') days+=7;
+    if (responsiveNeeded) days+=1;
+    if (reactNeeded) days+=2;
+    return days;
   };
 
   const onTilt=(e)=>{
@@ -34,7 +96,7 @@ export default function About() {
     { label:"University", value:"Sankalchand Patel University",   icon:GraduationCap, color:"text-emerald-500"},
     { label:"Degree",     value:"B.Tech Computer Engineering",    icon:BookOpen,      color:"text-pink-500"   },
     { label:"Location",   value:"Himatnagar 383001, Gujarat",     icon:MapPin,        color:"text-amber-500"  },
-    { label:"Mobile",     value:"+91-9426046258",                 icon:Phone,         color:"text-blue-500"   },
+    { label:"Languages",  value:"English, Hindi, Gujarati",       icon:Globe,         color:"text-blue-500"   },
     { label:"Email",      value:"aishasabugar1@gmail.com",        icon:Mail,          color:"text-rose-500"   },
   ];
 
@@ -42,6 +104,7 @@ export default function About() {
     { id:'all',       label:'All Skills'  },
     { id:'frontend',  label:'Front-End'   },
     { id:'styling',   label:'Styling'     },
+    { id:'databases', label:'Databases'   },
     { id:'languages', label:'Languages'   },
   ];
 
@@ -53,6 +116,9 @@ export default function About() {
     { name:"Tailwind CSS",               category:"styling",   pct:88, gradient:"from-indigo-400 to-violet-600" },
     { name:"Bootstrap",                  category:"styling",   pct:85, gradient:"from-purple-400 to-indigo-600" },
     { name:"Figma Design Translation",   category:"styling",   pct:80, gradient:"from-pink-400 to-rose-500"     },
+    { name:"MongoDB",                    category:"databases", pct:80, gradient:"from-emerald-500 to-green-600"  },
+    { name:"MySQL",                      category:"databases", pct:78, gradient:"from-blue-400 to-cyan-500"     },
+    { name:"PostgreSQL",                 category:"databases", pct:75, gradient:"from-blue-500 to-indigo-600"   },
     { name:"C & C++ Programming",        category:"languages", pct:75, gradient:"from-emerald-400 to-teal-600"  },
   ];
 
@@ -73,7 +139,7 @@ export default function About() {
       {/* PAGE HEADER */}
       <div className="text-center max-w-3xl mx-auto space-y-4 fade-in-up">
         <span className={`px-4 py-2 rounded-full text-xs font-bold glass border border-indigo-500/30 inline-block ${isDark?'text-indigo-300':'text-indigo-600'}`}>
-          Professional Profile
+          About &amp; Services
         </span>
         <h1 className={`text-5xl sm:text-6xl font-extrabold font-outfit leading-tight ${th.h}`}>
           About <span className="gradient-text">Aisha Sabugar</span>
@@ -148,7 +214,7 @@ export default function About() {
         <h2 className={`text-2xl font-bold font-outfit text-center ${th.h}`}>
           Personal <span className="gradient-text">Information</span>
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {personalDetails.map((item,idx)=>{
             const Icon=item.icon;
             return (
@@ -165,6 +231,70 @@ export default function About() {
             );
           })}
         </div>
+      </div>
+
+      {/* SERVICES & CAPABILITIES */}
+      <div className="space-y-8">
+        <div className="text-center space-y-2">
+          <span className="text-xs font-bold text-indigo-500 uppercase tracking-widest font-outfit">My Services</span>
+          <h2 className={`text-3xl font-bold font-outfit ${th.h}`}>
+            Services & <span className="gradient-text">Capabilities</span>
+          </h2>
+        </div>
+        
+        {/* 3D FLIP CARDS */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {services.map((svc)=>{
+            const Icon=svc.icon;
+            return (
+              <div key={svc.id} className="flip-card h-72">
+                <div className="flip-card-inner">
+                  {/* FRONT */}
+                  <div className={`flip-card-front th-card`}>
+                    <div className="space-y-4 h-full flex flex-col justify-between">
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <div className={`w-14 h-14 rounded-2xl bg-gradient-to-tr ${svc.gradient} flex items-center justify-center text-white shadow-lg`}>
+                            <Icon className="w-7 h-7"/>
+                          </div>
+                          <span className={`text-xs font-bold uppercase tracking-widest ${th.muted}`}>{svc.subtitle}</span>
+                        </div>
+                        <h3 className={`text-xl font-bold font-outfit ${th.h}`}>{svc.title}</h3>
+                        <p className={`text-sm leading-relaxed ${th.p}`}>{svc.description}</p>
+                      </div>
+                      <div className="flex items-center gap-2 text-indigo-500 text-xs font-bold uppercase tracking-wider">
+                        <span>Hover to see details</span>
+                        <ArrowRight className="w-3.5 h-3.5"/>
+                      </div>
+                    </div>
+                  </div>
+                  {/* BACK */}
+                  <div className={`flip-card-back bg-gradient-to-br ${svc.gradient} shadow-xl`}>
+                    <div className="h-full flex flex-col justify-between">
+                      <div className="space-y-4">
+                        <h3 className="text-xl font-bold font-outfit text-white">{svc.title}</h3>
+                        <p className="text-white/80 text-sm leading-relaxed">{svc.backDesc}</p>
+                        <ul className="space-y-2">
+                          {svc.features.map((f,i)=>(
+                            <li key={i} className="flex items-center gap-2 text-white/90 text-sm">
+                              <CheckCircle2 className="w-4 h-4 text-white shrink-0"/>{f}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {svc.backTags.map((t,i)=>(
+                          <span key={i} className="px-2.5 py-1 rounded-lg bg-white/20 text-white text-xs font-bold">{t}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <p className={`text-center text-xs ${th.muted}`}>☝️ Hover over each card to flip it and see details</p>
       </div>
 
       {/* SKILLS */}
@@ -202,25 +332,31 @@ export default function About() {
       </div>
 
       {/* TIMELINE */}
-      <div className="space-y-8">
+      <div className="space-y-10">
         <h2 className={`text-2xl font-bold font-outfit text-center ${th.h}`}>
           Education & <span className="gradient-text">Experience</span>
         </h2>
-        <div className="max-w-4xl mx-auto space-y-5">
+        <div className="relative border-l border-indigo-500/30 pl-8 ml-4 sm:ml-12 space-y-10 max-w-3xl mx-auto">
           {timeline.map((item,idx)=>{
             const Icon=item.icon;
             return (
-              <div key={idx} className="th-card p-7 flex flex-col sm:flex-row gap-6 items-start group" onMouseMove={onTilt} onMouseLeave={offTilt}>
-                <div className={`w-14 h-14 rounded-2xl bg-gradient-to-tr ${item.color} flex items-center justify-center text-white shadow-lg shrink-0`}>
-                  <Icon className="w-7 h-7"/>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex flex-wrap items-center gap-3">
-                    <h3 className={`text-lg font-bold font-outfit ${th.h}`}>{item.role}</h3>
-                    <span className={`px-3 py-0.5 rounded-full text-xs font-bold ${isDark?'bg-indigo-900/50 text-indigo-300 border border-indigo-800/60':'bg-indigo-50 text-indigo-700 border border-indigo-200'}`}>{item.period}</span>
+              <div key={idx} className="relative group flex flex-col gap-2">
+                {/* Timeline Node Dot */}
+                <div className="absolute -left-[40px] top-6 w-4.5 h-4.5 rounded-full bg-[#0a0a1a] border-2 border-indigo-500 group-hover:border-cyan-400 group-hover:scale-125 transition-all duration-300 z-10 shadow-[0_0_8px_rgba(99,102,241,0.5)]"></div>
+                
+                {/* Timeline Card */}
+                <div className="th-card p-6 flex flex-col sm:flex-row gap-5 items-start card-lift" onMouseMove={onTilt} onMouseLeave={offTilt}>
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-tr ${item.color} flex items-center justify-center text-white shadow-lg shrink-0`}>
+                    <Icon className="w-6 h-6"/>
                   </div>
-                  <p className="text-sm font-semibold text-indigo-600">{item.org}</p>
-                  <p className={`text-sm leading-relaxed ${th.p}`}>{item.desc}</p>
+                  <div className="space-y-1.5 flex-1 w-full">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <h3 className={`text-base font-extrabold font-outfit ${th.h}`}>{item.role}</h3>
+                      <span className={`px-2.5 py-0.5 rounded text-[10px] font-black uppercase tracking-wider ${isDark?'bg-indigo-950/60 text-indigo-300 border border-indigo-800/40':'bg-indigo-50 text-indigo-700 border border-indigo-200'}`}>{item.period}</span>
+                    </div>
+                    <p className="text-xs font-bold text-indigo-500 uppercase tracking-wide">{item.org}</p>
+                    <p className={`text-xs sm:text-sm leading-relaxed ${th.p}`}>{item.desc}</p>
+                  </div>
                 </div>
               </div>
             );
@@ -228,28 +364,7 @@ export default function About() {
         </div>
       </div>
 
-      {/* INTERESTS */}
-      <div className={`relative p-8 sm:p-10 rounded-3xl overflow-hidden ${th.sect}`}>
-        <div className="absolute inset-0 dot-grid opacity-20 rounded-3xl"></div>
-        <div className="relative z-10 space-y-6">
-          <div className="text-center space-y-2">
-            <Heart className="w-6 h-6 text-pink-500 mx-auto"/>
-            <h3 className={`text-2xl font-bold font-outfit ${th.h}`}>What Drives Me</h3>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {[
-              { title:"Responsive Layouts", desc:"Creating fluid mobile-first layouts that adapt perfectly to any screen size." },
-              { title:"UI/UX Micro-Interactions", desc:"Crafting smooth transitions, hover states, glassmorphism, and 3D depth effects." },
-              { title:"Continuous Growth", desc:"Learning React patterns, Tailwind architecture, and modern web engineering best practices." },
-            ].map((item,idx)=>(
-              <div key={idx} className="th-card p-6 space-y-2">
-                <h4 className={`font-bold font-outfit ${th.h}`}>{item.title}</h4>
-                <p className={`text-xs leading-relaxed ${th.p}`}>{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+
 
     </div>
   );

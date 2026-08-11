@@ -62,7 +62,7 @@ export default function Footer() {
           <div className="space-y-4">
             <h4 className={`text-[10px] font-bold uppercase tracking-widest font-outfit ${th.muted}`}>Navigation</h4>
             <ul className="space-y-2 text-sm">
-              {[{href:'/',label:'Home'},{href:'/about',label:'About Me'},{href:'/services',label:'Services'},{href:'/contact',label:'Contact'}].map(item=>(
+              {[{href:'/',label:'Home'},{href:'/about',label:'About & Services'},{href:'/projects',label:'Projects'},{href:'/contact',label:'Contact'}].map(item=>(
                 <li key={item.href}>
                   <Link href={item.href} onClick={scrollToTop}
                     className={`transition-colors cursor-pointer ${th.link}`}>{item.label}</Link>
@@ -78,10 +78,6 @@ export default function Footer() {
               <li className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-indigo-500 shrink-0"/>
                 <a href="mailto:aishasabugar1@gmail.com" className={`transition-colors truncate text-xs ${th.link}`}>aishasabugar1@gmail.com</a>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-indigo-500 shrink-0"/>
-                <a href="tel:+919426046258" className={`transition-colors text-xs ${th.link}`}>+91-9426046258</a>
               </li>
               <li className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-indigo-500 shrink-0 mt-0.5"/>

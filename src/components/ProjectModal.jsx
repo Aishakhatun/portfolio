@@ -6,7 +6,8 @@ import { useTheme } from '../context/ThemeContext.jsx';
 
 export default function ProjectModal({ project, onClose }) {
   const { isDark } = useTheme();
-  const [mode, setMode] = useState('info'); // 'info' | 'preview'
+  const hasDemo = project ? (project.demoUrl && project.demoUrl !== '#') : false;
+  const [mode, setMode] = useState(hasDemo ? 'preview' : 'info'); // 'info' | 'preview'
   const [device, setDevice] = useState('desktop'); // 'desktop' | 'tablet' | 'mobile'
   const [refreshKey, setRefreshKey] = useState(0);
 
